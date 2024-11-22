@@ -1,0 +1,4 @@
+name: chzzk
+version: '${version}'
+main: com.chzzk.Chzzk
+api-version: 1.20
