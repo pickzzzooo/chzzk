@@ -1,0 +1,4 @@
+channelId: "defaultChannelId"
+apiKey: "yourApiKey"
+websocketUrl: "wss://example.com/chat"
+
