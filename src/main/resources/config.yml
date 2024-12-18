@@ -1,4 +1,5 @@
 channelId: "defaultChannelId"
-apiKey: "yourApiKey"
+chatMode: true
+donationMode: true
 websocketUrl: "wss://example.com/chat"
 

@@ -5,5 +5,14 @@ api-version: 1.20
 
 commands:
   pchzzk:
-    description: "chzzk 플러그인 명령어"
-    usage: "/pchzzk reload"
+    description: "pchzzk 명령어를 실행합니다."
+    usage: "/pchzzk [reload]"
+
+permissions:
+  chzzk.use:
+    description: "pchzzk 명령어를 사용할 수 있는 권한"
+    default: op
+
+  chzzk.reload:
+    description: "pchzzk reload 명령어를 사용할 수 있는 권한"
+    default: op
