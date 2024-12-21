@@ -6,10 +6,13 @@ import com.google.gson.JsonParser;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import com.google.gson.JsonObject;
-
 import java.util.logging.Logger;
+
+/*
+https://api.chzzk.naver.com/service/v1/channels/(채널아이디)
+에서 가져오는 정보들 추출
+
+ */
 
 public class LoadLiveStatus {
 
@@ -34,7 +37,7 @@ public class LoadLiveStatus {
                 return null;
             }
 
-            // JSON 응답 파싱
+            // JSON 파싱
             String responseBody = response.body().string();
             JsonElement jsonElement = JsonParser.parseString(responseBody);
             return jsonElement.getAsJsonObject().getAsJsonObject("content");
@@ -45,7 +48,7 @@ public class LoadLiveStatus {
             return null;
         }
     }
-    // 채널명과 라이브 상태 콘솔창에 출력.
+    // 채널명과 라이브상태 콘솔 출력
     public void PrintLiveStatus(String channelId, Logger logger) {
         JsonObject channelInfo = getChannelInfo(channelId);
 

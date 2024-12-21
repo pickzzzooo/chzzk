@@ -1,6 +1,6 @@
 name: chzzk
 version: '${version}'
-main: com.chzzk.Chzzk
+main: com.chzzk.Main
 api-version: 1.20
 
 commands:
