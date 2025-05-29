@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.1.2' // Shadow Plugin 추가
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'com'
-version = '1.241122'
+version = '0.0529'
 
 repositories {
     mavenCentral()
@@ -37,8 +37,8 @@ java {
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8" // 소스 코드 인코딩을 UTF-8로 설정
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release = targetJavaVersion
     }
@@ -47,16 +47,22 @@ tasks.withType(JavaCompile) {
 processResources {
     def props = [version: version]
     inputs.properties props
-    filteringCharset 'UTF-8' // 리소스 파일 필터링 시 UTF-8 사용
+    filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
     }
 }
 
-// 플러그인 JAR에 외부 라이브러리 병합
+tasks.named("jar") {
+    enabled = false
+    dependsOn.clear()
+    actions.clear()
+}
+
+// Shadow JAR 설정
 tasks.named('shadowJar') {
     archiveBaseName.set('chzzk')
-    archiveClassifier.set('') // 추가적인 구분자 제거 (클래식 JAR 이름 사용)
+    archiveClassifier.set('')
     archiveVersion.set(version)
     doFirst {
         println("Shadow JAR 생성 중...")
@@ -66,23 +72,21 @@ tasks.named('shadowJar') {
     }
 }
 
-// 플러그인 경로 지정
+// 서버 플러그인 폴더로 자동 복사
 tasks.register("copyToServer", Copy) {
-    def serverPluginsFolder = file("C:/Users/test2/Desktop/minecraft/현재진행중인_프로젝트/치지직_1.21.1/테스트서버/plugins")
-    from("${buildDir}/libs") // 빌드된 JAR 파일 위치
-    include("*.jar") // 복사할 파일 형식
-    into(serverPluginsFolder) // 복사 대상 경로
-
+    def serverPluginsFolder = file("C:/Users/test2/Desktop/minecraft/현재진행중인_프로젝트/다이아룰렛_1.20.1/서버/plugins")
+    from("${buildDir}/libs")
+    include("*.jar")
+    into(serverPluginsFolder)
     doFirst {
         println("복사를 시작합니다. 대상 경로: ${serverPluginsFolder}")
     }
-
     doLast {
         println("복사가 완료되었습니다.")
     }
 }
 
-// 빌드 후 ShadowJar 실행 및 복사 작업 자동화
+// 빌드 시 ShadowJar + 복사 실행
 tasks.named("build") {
     dependsOn("shadowJar")
     finalizedBy("copyToServer")

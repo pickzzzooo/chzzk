@@ -3,3 +3,15 @@ chatMode: true
 donationMode: true
 websocketUrl: "wss://example.com/chat"
 
+후원 보상:
+  0:
+    - say 가격을 0원으로 쓰면 설정 안된 가격을 의미합니다.
+    - say 예를 들어 1000원, 3000원 이외 후원들은 모두 이 명령어가 실행됩니다.
+    - say 물론 0원을 설정해놓지 않으면 정해놓은 가격 이외 후원은 무시됩니다.
+  1000:
+    - summon skeleton ~ ~ ~ {SkeletonType:1}
+  3000:
+    - say bye
+    - time set 14000
+
+

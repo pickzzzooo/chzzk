@@ -1,6 +1,7 @@
 package com.chzzk.Event;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import xyz.r2turntrue.chzzk4j.ChzzkBuilder;
 import xyz.r2turntrue.chzzk4j.chat.ChatEventListener;
@@ -11,6 +12,7 @@ import xyz.r2turntrue.chzzk4j.chat.DonationMessage;
 import xyz.r2turntrue.chzzk4j.Chzzk;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,19 +51,20 @@ public class ChzzkChatHandler {
                         // config 확인
                         boolean chatMode = plugin.getConfig().getBoolean("chatMode");
                         if (chatMode == false) {return;}
-                        
+
                         String nickname;
                         if (msg.getProfile() == null) {
                             nickname = "익명";
                         } else {
                             nickname = msg.getProfile().getNickname();
                         }
-                        
+
                         //랜덤 색깔 코드 (클래스 여기 있음)
                         String rand_color_code = RandomColorCode.getRandomColorCode();
 
                         Bukkit.broadcastMessage("§2[채팅] " + rand_color_code + nickname + " : §f" + msg.getContent());
                     }
+
 
                     @Override
                     public void onDonationChat(DonationMessage msg) {
@@ -75,6 +78,7 @@ public class ChzzkChatHandler {
                         } else {
                             nickname = msg.getProfile().getNickname();
                         }
+                        handleDonation(msg.getPayAmount(), plugin);
                         Bukkit.broadcastMessage("§6[후원] §a" + nickname + " [" + msg.getPayAmount() + "원] " + " : §f" + msg.getContent());
                     }
 
@@ -83,6 +87,23 @@ public class ChzzkChatHandler {
 
         this.executor = Executors.newSingleThreadExecutor();
     }
+
+    private void handleDonation(int amount, Plugin plugin) {
+        FileConfiguration config = plugin.getConfig();
+
+        List<String> commands = config.getStringList("후원 보상." + amount);
+        if (commands.isEmpty()) {
+            commands = config.getStringList("후원 보상.0");
+        }
+
+        for (String command : commands) {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            });
+        }
+    }
+
+
 
     public void start() {
         if (executor == null || executor.isShutdown()) {
