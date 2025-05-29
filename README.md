@@ -15,5 +15,5 @@ implementation "io.github.R2turnTrue:chzzk4j:0.0.12"</br>
 # 📝 명령어
 /pchzzk : 현재 config.yml 상황 채팅출력 </br>
 /pchzzk reload :  현재 config.yml 상황 리로드 </br>
-/pchzzk start : 연동 시작
+/pchzzk start : 연동 시작</br>
 /pchzzk stop : 연동 중지
